@@ -19,7 +19,7 @@ result caching, and deterministic replay-from-fixture are all supported.
 ## Install
 
 ```bash
-uv add llm-functions   # or: pip install llm-functions
+uv add llmfunctionkit   # or: pip install llmfunctionkit
 ```
 
 You also need a configured LiteLLM provider (an API key for the model you
