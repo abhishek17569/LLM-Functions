@@ -1,0 +1,102 @@
+[project]
+name = "llm-functions"
+version = "0.1.0"
+description = "Decorator-based LLM-native typed Python functions — declare the signature and docstring; the LLM runs the body."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Abhishek Mishra", email = "abhishek17569@gmail.com" },
+]
+maintainers = [
+    { name = "Abhishek Mishra", email = "abhishek17569@gmail.com" },
+]
+requires-python = ">=3.10"
+keywords = [
+    "llm",
+    "openai",
+    "anthropic",
+    "litellm",
+    "ai",
+    "function",
+    "decorator",
+    "structured-output",
+    "pydantic",
+    "typed",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pydantic>=2.6",
+    "litellm>=1.40",
+    "diskcache>=5.6",
+]
+
+[project.urls]
+Homepage = "https://example.com/REPLACE-ME"
+Repository = "https://example.com/REPLACE-ME"
+
+[project.optional-dependencies]
+dev = [
+    "jsonschema>=4.21",
+    "respx>=0.21",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "mypy>=1.10",
+    "ruff>=0.5",
+]
+
+[dependency-groups]
+dev = [
+    "jsonschema>=4.21",
+    "respx>=0.21",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "mypy>=1.10",
+    "ruff>=0.5",
+    "pytest-cov>=7.1.0",
+    "pytest-socket>=0.8.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.10.9,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "llm_functions"
+module-root = "src"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+asyncio_mode = "auto"

@@ -1,0 +1,14 @@
+{
+  "key": {
+    "args_hash": "3b0df0fa4bce09e3df177f430efe5ca9e10c3a3cbb953a4d3653bb03593f62c2",
+    "function_source_hash": "c0aad61a82df1682ca2158dae015f631d589c9854bbafee55b277e1314003eb4",
+    "library_version": "0.1.0",
+    "model": "openai/gpt-4o-mini",
+    "sampling_params_hash": "77928500c49dd30ec20651df7fe19ba02c8621bc28ad9ca39b6eacfd8fec2325",
+    "system_prompt": "You are the implementation of the Python function `is_man`. Follow its docstring contract precisely.\n\nTask:\nDecide whether the text is talking about a man.",
+    "tool_schemas_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "value": {
+    "value": true
+  }
+}

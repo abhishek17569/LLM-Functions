@@ -1,0 +1,12 @@
+{
+  "key": {
+    "args_hash": "9fa2fb82e0467ab16df0805d8df6c054cadc3245132ec467db898eb1b614f7f3",
+    "function_source_hash": "338db792eaf3296bdff7ebae28cf0bb523e7e79518be3cad07f725102879ff14",
+    "library_version": "0.1.0",
+    "model": "openai/gpt-4o-mini",
+    "sampling_params_hash": "77928500c49dd30ec20651df7fe19ba02c8621bc28ad9ca39b6eacfd8fec2325",
+    "system_prompt": "You are the implementation of the Python function `greet`. Follow its docstring contract precisely.\n\nTask:\nStream a friendly greeting.",
+    "tool_schemas_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "value": "Hello, Alice!"
+}
