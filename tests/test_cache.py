@@ -1,4 +1,4 @@
-"""Tests for llm_functions._cache."""
+"""Tests for llmfunctionkit._cache."""
 
 from __future__ import annotations
 
@@ -8,14 +8,14 @@ from typing import Any
 
 import pytest
 
-from llm_functions._cache import (
+from llmfunctionkit._cache import (
     MISS,
     CacheKey,
     ResultCache,
     make_key,
     resolve_cache_dir,
 )
-from llm_functions._config import configure, reset_settings
+from llmfunctionkit._config import configure, reset_settings
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -43,7 +43,7 @@ def _reset_settings() -> Iterator[None]:
 
 @pytest.fixture
 def cache_dir(tmp_path: Path) -> Path:
-    target = tmp_path / "ai_function_cache"
+    target = tmp_path / "llmfunctionkit_cache"
     configure(cache_dir=str(target))
     return target
 
@@ -126,7 +126,7 @@ def test_key_changes_when_library_version_changes(
     monkeypatch: pytest.MonkeyPatch, baseline_kwargs: dict[str, Any]
 ) -> None:
     base = make_key(**baseline_kwargs)
-    monkeypatch.setattr("llm_functions._cache._library_version", lambda: "9.9.9")
+    monkeypatch.setattr("llmfunctionkit._cache._library_version", lambda: "9.9.9")
     bumped = make_key(**baseline_kwargs)
     assert base.to_sha256() != bumped.to_sha256()
     assert bumped.library_version == "9.9.9"
@@ -164,10 +164,10 @@ def test_library_version_falls_back_when_package_missing(
     from importlib.metadata import PackageNotFoundError
 
     def _raise(_: str) -> str:
-        raise PackageNotFoundError("llm-functions")
+        raise PackageNotFoundError("llmfunctionkit")
 
-    monkeypatch.setattr("llm_functions._cache.version", _raise)
-    from llm_functions._cache import _library_version  # type: ignore[attr-defined]
+    monkeypatch.setattr("llmfunctionkit._cache.version", _raise)
+    from llmfunctionkit._cache import _library_version  # type: ignore[attr-defined]
 
     assert _library_version() == "0.0.0+dev"
 
@@ -227,7 +227,7 @@ def test_cache_clear_removes_all_entries(cache_dir: Path, baseline_kwargs: dict[
 
 
 def test_miss_is_falsy_singleton() -> None:
-    from llm_functions._cache import _Miss  # type: ignore[attr-defined]
+    from llmfunctionkit._cache import _Miss  # type: ignore[attr-defined]
 
     assert bool(MISS) is False
     assert _Miss() is MISS
@@ -253,7 +253,7 @@ def test_resolve_cache_dir_uses_xdg_cache_home(
     monkeypatch.setenv("XDG_CACHE_HOME", str(tmp_path))
     reset_settings()
     resolved = resolve_cache_dir()
-    assert resolved == tmp_path / "llm_functions"
+    assert resolved == tmp_path / "llmfunctionkit"
     assert resolved.is_dir()
 
 
@@ -264,7 +264,7 @@ def test_resolve_cache_dir_falls_back_to_home(
     monkeypatch.setattr(Path, "home", classmethod(lambda cls: tmp_path))  # type: ignore[arg-type]
     reset_settings()
     resolved = resolve_cache_dir()
-    assert resolved == tmp_path / ".cache" / "llm_functions"
+    assert resolved == tmp_path / ".cache" / "llmfunctionkit"
     assert resolved.is_dir()
 
 

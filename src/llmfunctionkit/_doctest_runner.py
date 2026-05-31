@@ -9,8 +9,8 @@ expected output parsed from the docstring.
 Output parsing uses :func:`ast.literal_eval` only — never :func:`eval` — so
 docstrings cannot smuggle arbitrary code into the test runner.
 
-Activate with ``pytest -p llm_functions._doctest_runner`` or by adding
-``llm_functions._doctest_runner`` to ``[tool.pytest.ini_options] plugins``.
+Activate with ``pytest -p llmfunctionkit._doctest_runner`` or by adding
+``llmfunctionkit._doctest_runner`` to ``[tool.pytest.ini_options] plugins``.
 Skip with ``-m "not llm_function_example"``.
 """
 
@@ -57,7 +57,7 @@ class ExampleCase:
     raw_output: str
 
 
-def _is_ai_function(obj: Any) -> bool:
+def _is_llm_function(obj: Any) -> bool:
     """Return ``True`` if ``obj`` looks like an ``@llm_function``-decorated callable.
 
     The decorator is implemented by ``forge-decorator`` and not yet present
@@ -158,10 +158,10 @@ def collect_examples(fn: Callable[..., Any]) -> list[ExampleCase]:
     return cases
 
 
-def _iter_module_ai_functions(module: Any) -> Iterator[tuple[str, Callable[..., Any]]]:
+def _iter_module_llm_functions(module: Any) -> Iterator[tuple[str, Callable[..., Any]]]:
     seen: set[int] = set()
     for name, obj in inspect.getmembers(module):
-        if not _is_ai_function(obj):
+        if not _is_llm_function(obj):
             continue
         ident = id(obj)
         if ident in seen:
@@ -227,7 +227,7 @@ class _LLMFunctionModuleCollector(pytest.Module):
             module = self.obj
         except Exception:
             return
-        for fn_name, fn in _iter_module_ai_functions(module):
+        for fn_name, fn in _iter_module_llm_functions(module):
             for index, case in enumerate(collect_examples(fn)):
                 item_name = f"{fn_name}[example{index}]"
                 yield LLMFunctionExampleItem.from_parent(
@@ -235,7 +235,7 @@ class _LLMFunctionModuleCollector(pytest.Module):
                 )
 
 
-def _module_imports_ai_function(path: Path) -> bool:
+def _module_imports_llm_function(path: Path) -> bool:
     """Return ``True`` if the source at ``path`` references ``llm_function``.
 
     A cheap heuristic used to keep collection lazy: most test modules don't
@@ -284,11 +284,11 @@ def pytest_collect_file(parent: pytest.Collector, file_path: Path) -> pytest.Col
         return None
     if file_path.name.startswith("test_") or file_path.name.endswith("_test.py"):
         return None
-    if not _module_imports_ai_function(file_path):
+    if not _module_imports_llm_function(file_path):
         return None
     module = _resolve_module(file_path)
     if module is None:
         return None
-    if not any(True for _ in _iter_module_ai_functions(module)):
+    if not any(True for _ in _iter_module_llm_functions(module)):
         return None
     return _LLMFunctionModuleCollector.from_parent(parent=parent, path=file_path)

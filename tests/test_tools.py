@@ -1,4 +1,4 @@
-"""Tests for llm_functions._tools."""
+"""Tests for llmfunctionkit._tools."""
 
 from __future__ import annotations
 
@@ -6,14 +6,14 @@ from collections.abc import Iterator
 
 import pytest
 
-from llm_functions._config import (
+from llmfunctionkit._config import (
     ConfigurationError,
     Settings,
     configure,
     reset_settings,
 )
-from llm_functions._exceptions import ToolExecutionError
-from llm_functions._tools import (
+from llmfunctionkit._exceptions import ToolExecutionError
+from llmfunctionkit._tools import (
     ToolDef,
     ToolRegistry,
     invoke_tool,

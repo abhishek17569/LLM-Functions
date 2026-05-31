@@ -1,9 +1,9 @@
-"""Tests for llm_functions._exceptions."""
+"""Tests for llmfunctionkit._exceptions."""
 
 from __future__ import annotations
 
-from llm_functions._docstring import RaiseSpec
-from llm_functions._exceptions import (
+from llmfunctionkit._docstring import RaiseSpec
+from llmfunctionkit._exceptions import (
     ConfigurationError,
     LLMFunctionError,
     OutputValidationError,

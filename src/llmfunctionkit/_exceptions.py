@@ -1,7 +1,7 @@
 """Public exception surface for llm_function plus dynamic exception synthesis.
 
 Re-exports the exception types defined in lower foundation modules so callers
-have a single import (`from llm_functions import …`) for every error.
+have a single import (`from llmfunctionkit import …`) for every error.
 
 Also defines:
 

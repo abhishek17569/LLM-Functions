@@ -5,7 +5,7 @@ Run from the project root:
     uv run python scripts/record_e2e_fixtures.py
 
 Writes one ``<sha256>.json`` per (function, call) pair into
-``tests/fixtures/llm_functions/``. Run again any time the function source,
+``tests/fixtures/llmfunctionkit/``. Run again any time the function source,
 docstring, or call args change so the cache key stays in sync.
 """
 
@@ -22,13 +22,13 @@ sys.path.insert(0, str(ROOT / "tests"))
 
 
 def main() -> None:
-    from llm_functions._cache import CacheKey
-    from llm_functions._config import configure, reset_settings
-    from llm_functions._decorator import _build_cache_key_for_call, _set_provider_factory
-    from llm_functions._provider import _OUTPUT_TOOL_NAME, Provider
+    from llmfunctionkit._cache import CacheKey
+    from llmfunctionkit._config import configure, reset_settings
+    from llmfunctionkit._decorator import _build_cache_key_for_call, _set_provider_factory
+    from llmfunctionkit._provider import _OUTPUT_TOOL_NAME, Provider
 
     reset_settings()
-    fixtures_dir = ROOT / "tests" / "fixtures" / "llm_functions"
+    fixtures_dir = ROOT / "tests" / "fixtures" / "llmfunctionkit"
     fixtures_dir.mkdir(parents=True, exist_ok=True)
     configure(replay_fixtures_dir=str(fixtures_dir))
 

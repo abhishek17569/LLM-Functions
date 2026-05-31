@@ -1,4 +1,4 @@
-"""Tests for llm_functions._provider.
+"""Tests for llmfunctionkit._provider.
 
 All LLM calls are mocked by injecting a fake ``completion_fn`` into
 :class:`Provider`; no real network is touched.
@@ -12,7 +12,7 @@ from typing import Any
 import pytest
 from litellm.exceptions import UnsupportedParamsError
 
-from llm_functions._provider import (
+from llmfunctionkit._provider import (
     _OUTPUT_TOOL_NAME,
     OutputValidationError,
     Provider,

@@ -43,7 +43,7 @@ class ConfigurationError(LLMFunctionError):
     """Raised when configuration is invalid (bad cache mode, unknown setting, etc.)."""
 
 
-_LOGGER = logging.getLogger("llm_functions")
+_LOGGER = logging.getLogger("llmfunctionkit")
 
 
 @dataclass(frozen=True)
@@ -92,7 +92,7 @@ class Settings(BaseModel):
     max_tool_iterations: int = Field(default=10, ge=0)
     timeout: float = Field(default=60.0, gt=0.0)
     allow_all_tools: bool = False
-    replay_fixtures_dir: str = "tests/fixtures/llm_functions"
+    replay_fixtures_dir: str = "tests/fixtures/llmfunctionkit"
     providers: dict[str, ProviderConfig] | None = Field(
         default=None,
         description=(
@@ -110,7 +110,7 @@ _DEFAULT_SETTINGS: Settings = Settings()
 _GLOBAL_SETTINGS: Settings = Settings()
 
 _UNSET: Any = object()
-_LLM_FUNCTIONS_HANDLER_TAG = "_llm_functions_owned"
+_LLMFUNCTIONKIT_HANDLER_TAG = "_llmfunctionkit_owned"
 
 
 def _install_logger(*, level: int | str, stream: Any) -> None:
@@ -130,19 +130,19 @@ def _install_logger(*, level: int | str, stream: Any) -> None:
             f"log_level must be a level name (e.g. 'DEBUG') or int, got {level!r}"
         )
 
-    logger = logging.getLogger("llm_functions")
+    logger = logging.getLogger("llmfunctionkit")
     logger.setLevel(target_level)
     logger.propagate = False
 
     # Remove any handler we previously installed so repeated configure() calls
     # don't double-print.
     for existing in list(logger.handlers):
-        if getattr(existing, _LLM_FUNCTIONS_HANDLER_TAG, False):
+        if getattr(existing, _LLMFUNCTIONKIT_HANDLER_TAG, False):
             logger.removeHandler(existing)
 
     handler = logging.StreamHandler(stream if stream is not None else sys.stderr)
     handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s"))
-    setattr(handler, _LLM_FUNCTIONS_HANDLER_TAG, True)
+    setattr(handler, _LLMFUNCTIONKIT_HANDLER_TAG, True)
     logger.addHandler(handler)
 
 
@@ -214,9 +214,9 @@ def reset_settings() -> None:
 
     global _GLOBAL_SETTINGS
     _GLOBAL_SETTINGS = Settings()
-    logger = logging.getLogger("llm_functions")
+    logger = logging.getLogger("llmfunctionkit")
     for existing in list(logger.handlers):
-        if getattr(existing, _LLM_FUNCTIONS_HANDLER_TAG, False):
+        if getattr(existing, _LLMFUNCTIONKIT_HANDLER_TAG, False):
             logger.removeHandler(existing)
     logger.propagate = True
     logger.setLevel(logging.NOTSET)
@@ -283,7 +283,7 @@ def resolve(
     overrides. ``None`` values in a layer are ignored so omitted fields fall
     through to the layer below.
 
-    Logs an INFO message via ``logging.getLogger("llm_functions")`` when a
+    Logs an INFO message via ``logging.getLogger("llmfunctionkit")`` when a
     docstring directive overrides a non-default global ``model`` or ``cache``
     value.
     """
@@ -303,7 +303,7 @@ def resolve(
         new_value = docstring_layer[setting_name]
         if global_value != default_value and global_value != new_value:
             _LOGGER.info(
-                "llm_functions: docstring overrides global %s=%r with %r",
+                "llmfunctionkit: docstring overrides global %s=%r with %r",
                 setting_name,
                 global_value,
                 new_value,

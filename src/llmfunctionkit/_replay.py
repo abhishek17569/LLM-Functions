@@ -1,6 +1,6 @@
 """Replay-from-fixture store for llm_function.
 
-A separate execution path from :mod:`llm_functions._cache`. Where the result
+A separate execution path from :mod:`llmfunctionkit._cache`. Where the result
 cache is opportunistic and content-addressed on disk, the replay store is
 deterministic and tracked in the source tree.
 
@@ -9,7 +9,7 @@ Modes
 * ``cache="replay"`` (read-only): :meth:`ReplayStore.get` returns the fixture
   if present, else raises :class:`ReplayMissError` with the suggested fixture
   path so the user knows where to drop the recorded JSON.
-* ``cache="on"`` with ``LLM_FUNCTIONS_RECORD=1`` (write mode): callers may use
+* ``cache="on"`` with ``LLMFUNCTIONKIT_RECORD=1`` (write mode): callers may use
   :meth:`ReplayStore.record` to write a fresh fixture for the given key.
   Without the env var, ``record`` is a no-op so test runs do not silently
   mutate fixtures.
@@ -36,11 +36,11 @@ __all__ = [
 ]
 
 
-RECORD_ENV_VAR: str = "LLM_FUNCTIONS_RECORD"
+RECORD_ENV_VAR: str = "LLMFUNCTIONKIT_RECORD"
 
 
 def is_recording() -> bool:
-    """Return ``True`` when ``LLM_FUNCTIONS_RECORD`` is set to a truthy value."""
+    """Return ``True`` when ``LLMFUNCTIONKIT_RECORD`` is set to a truthy value."""
 
     raw = os.environ.get(RECORD_ENV_VAR, "")
     return raw.strip().lower() in {"1", "true", "yes", "on"}
@@ -52,7 +52,7 @@ class ReplayMissError(LLMFunctionError):
     Attributes:
         key: The :class:`CacheKey` whose fixture is missing.
         suggested_path: Where the fixture should be written. Surfaced in the
-            error message so users can rerun with ``LLM_FUNCTIONS_RECORD=1`` to
+            error message so users can rerun with ``LLMFUNCTIONKIT_RECORD=1`` to
             populate it.
     """
 

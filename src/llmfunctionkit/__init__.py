@@ -38,6 +38,6 @@ __all__ = [
 ]
 
 try:
-    __version__: str = version("llm-functions")
+    __version__: str = version("llmfunctionkit")
 except PackageNotFoundError:
     __version__ = "0.0.0+dev"

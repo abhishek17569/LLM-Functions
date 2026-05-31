@@ -16,11 +16,11 @@ from typing import Any
 import pytest
 from pydantic import BaseModel
 
-from llm_functions import llm_function
-from llm_functions._config import reset_settings
-from llm_functions._decorator import _set_provider_factory
-from llm_functions._exceptions import ConfigurationError, LLMFunctionError
-from llm_functions._provider import (
+from llmfunctionkit import llm_function
+from llmfunctionkit._config import reset_settings
+from llmfunctionkit._decorator import _set_provider_factory
+from llmfunctionkit._exceptions import ConfigurationError, LLMFunctionError
+from llmfunctionkit._provider import (
     _OUTPUT_TOOL_NAME,
     OutputValidationError,
     Provider,
@@ -170,7 +170,7 @@ def test_sync_wrapper_returns_pydantic_model(install_provider: None) -> None:
     assert out.ok is True
 
 
-def test_sync_wrapper_marks_ai_function_attribute() -> None:
+def test_sync_wrapper_marks_llm_function_attribute() -> None:
     @llm_function
     def fn(x: int) -> int:
         """Double it."""
@@ -267,8 +267,8 @@ def _ok_response() -> dict[str, Any]:
 
 
 def test_configured_provider_forwards_api_key(install_provider: None) -> None:
-    from llm_functions import ProviderConfig
-    from llm_functions._config import configure
+    from llmfunctionkit import ProviderConfig
+    from llmfunctionkit._config import configure
 
     configure(
         providers={
@@ -288,8 +288,8 @@ def test_configured_provider_forwards_api_key(install_provider: None) -> None:
 
 
 def test_provider_picks_anthropic_for_anthropic_model(install_provider: None) -> None:
-    from llm_functions import ProviderConfig
-    from llm_functions._config import configure
+    from llmfunctionkit import ProviderConfig
+    from llmfunctionkit._config import configure
 
     configure(
         providers={
@@ -309,8 +309,8 @@ def test_provider_picks_anthropic_for_anthropic_model(install_provider: None) ->
 
 
 def test_no_credentials_forwarded_when_provider_unconfigured(install_provider: None) -> None:
-    from llm_functions import ProviderConfig
-    from llm_functions._config import configure
+    from llmfunctionkit import ProviderConfig
+    from llmfunctionkit._config import configure
 
     configure(providers={"openai": ProviderConfig(api_key="sk-O")})
 
@@ -327,8 +327,8 @@ def test_no_credentials_forwarded_when_provider_unconfigured(install_provider: N
 
 
 def test_provider_forwards_api_base_and_extra_headers(install_provider: None) -> None:
-    from llm_functions import ProviderConfig
-    from llm_functions._config import configure
+    from llmfunctionkit import ProviderConfig
+    from llmfunctionkit._config import configure
 
     configure(
         providers={
@@ -353,8 +353,8 @@ def test_provider_forwards_api_base_and_extra_headers(install_provider: None) ->
 
 
 def test_provider_callable_api_key_refreshes_per_call(install_provider: None) -> None:
-    from llm_functions import ProviderConfig
-    from llm_functions._config import configure
+    from llmfunctionkit import ProviderConfig
+    from llmfunctionkit._config import configure
 
     counter = {"n": 0}
 
@@ -392,7 +392,7 @@ def test_debug_kwarg_prints_prompt_to_stderr(
 
     echo("hello world", debug=True)
     err = capsys.readouterr().err
-    assert "llm_functions debug:" in err
+    assert "llmfunctionkit debug:" in err
     assert "echo" in err
     assert "model:       openai/gpt-4o-mini" in err
     assert "--- system ---" in err
@@ -412,7 +412,7 @@ def test_debug_off_by_default_emits_no_dump(
 
     echo("hello")
     err = capsys.readouterr().err
-    assert "llm_functions debug" not in err
+    assert "llmfunctionkit debug" not in err
 
 
 def test_debug_logging_dumps_request_payload(
@@ -427,10 +427,10 @@ def test_debug_logging_dumps_request_payload(
     def echo(text: str) -> str:
         """Echo."""
 
-    with caplog.at_level(logging.DEBUG, logger="llm_functions"):
+    with caplog.at_level(logging.DEBUG, logger="llmfunctionkit"):
         echo("hello")
     debug_records = [
-        r for r in caplog.records if r.name == "llm_functions" and r.levelno == logging.DEBUG
+        r for r in caplog.records if r.name == "llmfunctionkit" and r.levelno == logging.DEBUG
     ]
     assert any("acompletion request payload" in r.getMessage() for r in debug_records)
     # Credentials are not present in this call; just verify payload contains messages.
@@ -443,8 +443,8 @@ def test_debug_logging_redacts_credentials(
 ) -> None:
     import logging
 
-    from llm_functions import ProviderConfig
-    from llm_functions._config import configure
+    from llmfunctionkit import ProviderConfig
+    from llmfunctionkit._config import configure
 
     configure(
         providers={
@@ -461,12 +461,12 @@ def test_debug_logging_redacts_credentials(
     def echo(text: str) -> str:
         """Echo."""
 
-    with caplog.at_level(logging.DEBUG, logger="llm_functions"):
+    with caplog.at_level(logging.DEBUG, logger="llmfunctionkit"):
         echo("hi")
     joined = "\n".join(
         r.getMessage()
         for r in caplog.records
-        if r.name == "llm_functions" and r.levelno == logging.DEBUG
+        if r.name == "llmfunctionkit" and r.levelno == logging.DEBUG
     )
     assert "sk-SECRET-VALUE" not in joined
     assert "tenant=foo" not in joined  # extra_headers values redacted
@@ -560,7 +560,7 @@ def test_cache_on_writes_then_reads(
     install_provider: None,
     tmp_path: Any,
 ) -> None:
-    from llm_functions._config import configure
+    from llmfunctionkit._config import configure
 
     configure(cache_dir=str(tmp_path / "cache"))
 
@@ -591,8 +591,8 @@ def test_cache_on_writes_then_reads(
 
 
 def test_cache_replay_miss_raises(install_provider: None, tmp_path: Any) -> None:
-    from llm_functions._config import configure
-    from llm_functions._exceptions import ReplayMissError
+    from llmfunctionkit._config import configure
+    from llmfunctionkit._exceptions import ReplayMissError
 
     configure(replay_fixtures_dir=str(tmp_path / "replay"))
 

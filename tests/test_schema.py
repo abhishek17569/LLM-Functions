@@ -15,7 +15,7 @@ from typing import Literal, Union
 import jsonschema
 from pydantic import BaseModel, Field
 
-from llm_functions._schema import build_input_schema, build_output_schema
+from llmfunctionkit._schema import build_input_schema, build_output_schema
 
 
 def _check(schema: dict[str, object]) -> None:

@@ -1,4 +1,4 @@
-# LLM Functions
+# LLM Function Kit
 
 Turn a Python function signature and docstring into an LLM-backed implementation.
 
@@ -19,7 +19,7 @@ result caching, and deterministic replay-from-fixture are all supported.
 ## Install
 
 ```bash
-uv add llm-functions   # or: pip install llm-functions
+uv add llmfunctionkit   # or: pip install llmfunctionkit
 ```
 
 You also need a configured LiteLLM provider (an API key for the model you
@@ -36,7 +36,7 @@ the appropriate provider credential.
 ### 1. Boolean classifier
 
 ```python
-from llm_functions import llm_function
+from llmfunctionkit import llm_function
 
 @llm_function(cache="replay", model="openai/gpt-4o-mini")
 def is_man(text: str) -> bool:
@@ -60,7 +60,7 @@ satisfy the contract; the call is converted back into the declared Python
 exception with the model's reason as the message.
 
 ```python
-from llm_functions import llm_function
+from llmfunctionkit import llm_function
 
 class NameNotFoundError(Exception):
     """No name was found in the text."""
@@ -93,7 +93,7 @@ list items.
 import asyncio
 from collections.abc import AsyncIterator
 
-from llm_functions import llm_function
+from llmfunctionkit import llm_function
 
 @llm_function(cache="replay", model="openai/gpt-4o-mini")
 async def greet(name: str) -> AsyncIterator[str]:
@@ -126,7 +126,7 @@ understands. Aliases are accepted (e.g. `Return` ≡ `Returns`,
 ```python
 from pydantic import BaseModel, Field
 
-from llm_functions import llm_function, llm_tool
+from llmfunctionkit import llm_function, llm_tool
 
 
 class ActionItem(BaseModel):
@@ -219,7 +219,7 @@ Pass any callable in `tools=[...]` and the model can invoke it during the
 run. Tools are validated against a JSON-Schema derived from their signature.
 
 ```python
-from llm_functions import llm_function, llm_tool
+from llmfunctionkit import llm_function, llm_tool
 
 @llm_tool
 def search_web(query: str) -> str:
@@ -250,7 +250,7 @@ schemas, and arguments.
 Configure the cache directory globally:
 
 ```python
-from llm_functions import configure
+from llmfunctionkit import configure
 configure(cache_dir="./.ai_function_cache",
           replay_fixtures_dir="./tests/fixtures/llm_function")
 ```
@@ -272,7 +272,7 @@ their current value. Per-decorator and per-call overrides win over these.
 | `timeout` | `float > 0` | `60.0` | Per-call HTTP timeout. |
 | `allow_all_tools` | `bool` | `False` | Required for `tools="*"`. |
 | `providers` | `dict[str, ProviderConfig \| dict]` | `None` | Per-provider keys, gateway URLs, headers — see "Provider credentials". |
-| `log_level` | `"DEBUG" \| "INFO" \| ...` or `int` | not set | Installs a dedicated handler on the `llm_functions` logger; `propagate=False` so root-level libraries (LiteLLM, httpx) stay quiet. |
+| `log_level` | `"DEBUG" \| "INFO" \| ...` or `int` | not set | Installs a dedicated handler on the `llmfunctionkit` logger; `propagate=False` so root-level libraries (LiteLLM, httpx) stay quiet. |
 | `log_stream` | file-like | `sys.stderr` | Optional stream for the installed log handler. Pair with `log_level=`. |
 
 ## Provider credentials
@@ -285,7 +285,7 @@ Portkey, custom OAuth proxies), or need to refresh JWTs, configure each
 provider explicitly:
 
 ```python
-from llm_functions import configure, ProviderConfig
+from llmfunctionkit import configure, ProviderConfig
 
 configure(providers={
     "openai":    ProviderConfig(api_key="sk-..."),
@@ -313,7 +313,7 @@ can mix configured and env-based providers.
 import time
 
 import jwt_helper                                # your auth client
-from llm_functions import configure, ProviderConfig
+from llmfunctionkit import configure, ProviderConfig
 
 def fresh_jwt() -> str:                          # called per LLM call
     return jwt_helper.get_token()                # rotates automatically
@@ -376,7 +376,7 @@ emit_final_answer
 ```
 
 **Always-on, structured.** Call `configure(log_level="DEBUG")` once at
-startup. This installs a dedicated handler on the `llm_functions` logger
+startup. This installs a dedicated handler on the `llmfunctionkit` logger
 and disables propagation to the root logger — so you get the full
 request payload (messages, tools, sampling params) on every call,
 including param-drop retries, **without** dragging LiteLLM, httpx, or
@@ -385,13 +385,13 @@ urllib3 logs along for the ride. `api_key` is omitted and
 leak credentials.
 
 ```python
-from llm_functions import configure
+from llmfunctionkit import configure
 configure(log_level="DEBUG")                  # only llm_function logs
 configure(log_level="DEBUG", log_stream=open("/tmp/llm_function.log", "w"))
 ```
 
 If you'd rather wire the logger yourself (e.g. through your app's
-`dictConfig`), set the level on `logging.getLogger("llm_functions")`,
+`dictConfig`), set the level on `logging.getLogger("llmfunctionkit")`,
 attach a handler, and set `propagate = False`. The library writes its
 DEBUG records there regardless of who installed the handler.
 
@@ -422,7 +422,7 @@ is_man("…", debug=True)
 ## Public API
 
 ```python
-from llm_functions import (
+from llmfunctionkit import (
     llm_function, llm_tool, configure, ProviderConfig,
     LLMFunctionError, ConfigurationError, OutputValidationError,
     ProviderError, ReplayMissError, ToolExecutionError, ToolIterationError,

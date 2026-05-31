@@ -2,7 +2,7 @@
   "key": {
     "args_hash": "cd3dbbd7aca099166615d56af51293fc0b0f9d4ddc8ea288b9fbd9a0f30e25db",
     "function_source_hash": "bdd53857bc645d19affcb881f269fe389032ecefd0aaff01d504a7b6d3c2a56b",
-    "library_version": "0.1.0",
+    "library_version": "0.1.1",
     "model": "openai/gpt-4o-mini",
     "sampling_params_hash": "77928500c49dd30ec20651df7fe19ba02c8621bc28ad9ca39b6eacfd8fec2325",
     "system_prompt": "You are the implementation of the Python function `find_names`. Follow its docstring contract precisely.\n\nTask:\nExtract every personal name from the text.\n\nFailure modes:\n- If If the text contains no names at all., call the tool `raise_NameNotFoundError` with a short reason instead of returning a value.",

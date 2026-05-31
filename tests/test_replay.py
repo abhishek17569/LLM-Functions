@@ -1,4 +1,4 @@
-"""Tests for llm_functions._replay."""
+"""Tests for llmfunctionkit._replay."""
 
 from __future__ import annotations
 
@@ -9,9 +9,9 @@ from typing import Any
 
 import pytest
 
-from llm_functions._cache import CacheKey, make_key
-from llm_functions._config import configure, reset_settings
-from llm_functions._replay import (
+from llmfunctionkit._cache import CacheKey, make_key
+from llmfunctionkit._config import configure, reset_settings
+from llmfunctionkit._replay import (
     RECORD_ENV_VAR,
     ReplayMissError,
     ReplayStore,

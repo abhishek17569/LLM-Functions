@@ -1,6 +1,6 @@
 [project]
-name = "llm-functions"
-version = "0.1.0"
+name = "llmfunctionkit"
+version = "0.1.1"
 description = "Decorator-based LLM-native typed Python functions — declare the signature and docstring; the LLM runs the body."
 readme = "README.md"
 license = { text = "MIT" }
@@ -45,8 +45,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://example.com/REPLACE-ME"
-Repository = "https://example.com/REPLACE-ME"
+Homepage = "https://github.com/abhishek17569/LLM-Functions"
+Repository = "https://github.com/abhishek17569/LLM-Functions"
 
 [project.optional-dependencies]
 dev = [
@@ -75,7 +75,7 @@ requires = ["uv_build>=0.10.9,<0.11.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-module-name = "llm_functions"
+module-name = "llmfunctionkit"
 module-root = "src"
 
 [tool.ruff]

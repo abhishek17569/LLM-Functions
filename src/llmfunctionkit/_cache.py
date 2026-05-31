@@ -63,7 +63,7 @@ MISS: Final[_Miss] = _Miss()
 
 def _library_version() -> str:
     try:
-        return version("llm-functions")
+        return version("llmfunctionkit")
     except PackageNotFoundError:
         return "0.0.0+dev"
 
@@ -141,8 +141,8 @@ def make_key(
 def resolve_cache_dir(settings: Settings | None = None) -> Path:
     """Return the on-disk cache directory.
 
-    Precedence: ``settings.cache_dir`` > ``$XDG_CACHE_HOME/llm_functions`` >
-    ``~/.cache/llm_functions``. The directory is created if it does not exist.
+    Precedence: ``settings.cache_dir`` > ``$XDG_CACHE_HOME/llmfunctionkit`` >
+    ``~/.cache/llmfunctionkit``. The directory is created if it does not exist.
     """
 
     if settings is None:
@@ -152,7 +152,7 @@ def resolve_cache_dir(settings: Settings | None = None) -> Path:
     else:
         xdg = os.environ.get("XDG_CACHE_HOME")
         base = Path(xdg).expanduser() if xdg else Path.home() / ".cache"
-        path = base / "llm_functions"
+        path = base / "llmfunctionkit"
     path.mkdir(parents=True, exist_ok=True)
     return path
 

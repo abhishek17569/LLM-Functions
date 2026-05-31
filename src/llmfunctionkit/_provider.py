@@ -37,7 +37,7 @@ __all__ = [
 ]
 
 
-_LOGGER = logging.getLogger("llm_functions")
+_LOGGER = logging.getLogger("llmfunctionkit")
 _OUTPUT_TOOL_NAME = "emit_final_answer"
 
 # LiteLLM raises ``UnsupportedParamsError`` when the upstream provider rejects
@@ -149,7 +149,7 @@ class Provider:
                 # native path's outer handler still fall back to JSON mode.
                 raise
             _LOGGER.info(
-                "llm_functions: %s rejected params %s; retrying without them.",
+                "llmfunctionkit: %s rejected params %s; retrying without them.",
                 kwargs.get("model", "<unknown model>"),
                 sorted(to_drop),
             )
@@ -205,7 +205,7 @@ class Provider:
                 )
             except UnsupportedParamsError as exc:
                 _LOGGER.info(
-                    "llm_functions: model %s rejected tool params (%s); falling back to JSON mode.",
+                    "llmfunctionkit: model %s rejected tool params (%s); falling back to JSON mode.",
                     model,
                     exc,
                 )
@@ -239,7 +239,7 @@ class Provider:
         """Stream raw text deltas from the underlying provider.
 
         Higher-level shaping (parsing arrays, partial Pydantic models) is
-        handled in :mod:`llm_functions._streaming`. This method only yields
+        handled in :mod:`llmfunctionkit._streaming`. This method only yields
         text deltas as they arrive and propagates upstream errors.
         """
 
@@ -270,7 +270,7 @@ class Provider:
 
         # ``return_kind`` is part of the public signature for forge-decorator's
         # dispatcher to specialise on; the actual specialisation happens in
-        # :mod:`llm_functions._streaming`. Keeping it here lets a caller use the
+        # :mod:`llmfunctionkit._streaming`. Keeping it here lets a caller use the
         # provider directly if they want raw deltas.
         del return_kind
 
@@ -506,7 +506,7 @@ def _log_request(kwargs: dict[str, Any], *, retry: bool = False) -> None:
     except Exception:  # pragma: no cover - very defensive
         body = repr(safe)
     label = "retry " if retry else ""
-    _LOGGER.debug("llm_functions: %sacompletion request payload:\n%s", label, body)
+    _LOGGER.debug("llmfunctionkit: %sacompletion request payload:\n%s", label, body)
 
 
 def _apply_credentials(

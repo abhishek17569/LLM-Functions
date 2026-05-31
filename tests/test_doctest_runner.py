@@ -1,4 +1,4 @@
-"""Tests for llm_functions._doctest_runner."""
+"""Tests for llmfunctionkit._doctest_runner."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Any, TypeVar
 
 import pytest
 
-from llm_functions._doctest_runner import (
+from llmfunctionkit._doctest_runner import (
     collect_examples,
     parse_example_input,
     parse_example_output,
@@ -216,7 +216,7 @@ def test_pytest_collects_llm_function_examples_in_module(pytester: pytest.Pytest
     pytester.makepyfile(
         conftest=textwrap.dedent(
             """
-            pytest_plugins = ["llm_functions._doctest_runner"]
+            pytest_plugins = ["llmfunctionkit._doctest_runner"]
             """
         )
     )
@@ -248,7 +248,7 @@ def test_pytest_runs_collected_example_assertion(pytester: pytest.Pytester) -> N
     pytester.makepyfile(
         conftest=textwrap.dedent(
             """
-            pytest_plugins = ["llm_functions._doctest_runner"]
+            pytest_plugins = ["llmfunctionkit._doctest_runner"]
             """
         )
     )
@@ -280,7 +280,7 @@ def test_pytest_failing_example_fails_test(pytester: pytest.Pytester) -> None:
     pytester.makepyfile(
         conftest=textwrap.dedent(
             """
-            pytest_plugins = ["llm_functions._doctest_runner"]
+            pytest_plugins = ["llmfunctionkit._doctest_runner"]
             """
         )
     )
@@ -312,7 +312,7 @@ def test_marker_lets_users_skip_examples(pytester: pytest.Pytester) -> None:
     pytester.makepyfile(
         conftest=textwrap.dedent(
             """
-            pytest_plugins = ["llm_functions._doctest_runner"]
+            pytest_plugins = ["llmfunctionkit._doctest_runner"]
             """
         )
     )
@@ -323,7 +323,7 @@ def test_marker_lets_users_skip_examples(pytester: pytest.Pytester) -> None:
     assert "failed" not in output
 
 
-def test_collector_skips_files_without_ai_function_reference(
+def test_collector_skips_files_without_llm_function_reference(
     pytester: pytest.Pytester,
 ) -> None:
     """Non-test .py files that don't reference llm_function are not collected."""
@@ -339,7 +339,7 @@ def test_collector_skips_files_without_ai_function_reference(
     pytester.makepyfile(
         conftest=textwrap.dedent(
             """
-            pytest_plugins = ["llm_functions._doctest_runner"]
+            pytest_plugins = ["llmfunctionkit._doctest_runner"]
             """
         )
     )
@@ -373,7 +373,7 @@ def test_collector_falls_back_to_direct_call_when_cache_kwarg_unsupported(
     pytester.makepyfile(
         conftest=textwrap.dedent(
             """
-            pytest_plugins = ["llm_functions._doctest_runner"]
+            pytest_plugins = ["llmfunctionkit._doctest_runner"]
             """
         )
     )

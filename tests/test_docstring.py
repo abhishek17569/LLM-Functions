@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from llm_functions._config import ConfigurationError
-from llm_functions._docstring import DocstringSpec, parse_docstring
+from llmfunctionkit._config import ConfigurationError
+from llmfunctionkit._docstring import DocstringSpec, parse_docstring
 
 
 class CustomDomainError(Exception):

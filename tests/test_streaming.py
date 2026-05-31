@@ -1,4 +1,4 @@
-"""Tests for llm_functions._streaming."""
+"""Tests for llmfunctionkit._streaming."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from collections.abc import AsyncIterator
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from llm_functions._streaming import stream_iterable, stream_partial, stream_str
+from llmfunctionkit._streaming import stream_iterable, stream_partial, stream_str
 
 
 async def _stream(chunks: list[str]) -> AsyncIterator[str]:

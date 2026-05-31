@@ -6,7 +6,7 @@ import logging
 
 import pytest
 
-from llm_functions._config import (
+from llmfunctionkit._config import (
     ConfigurationError,
     ProviderConfig,
     Settings,
@@ -74,19 +74,19 @@ def test_docstring_override_logs_when_global_is_non_default(
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     configure(model="anthropic/claude-3-5-haiku")
-    with caplog.at_level(logging.INFO, logger="llm_functions"):
+    with caplog.at_level(logging.INFO, logger="llmfunctionkit"):
         s = resolve(docstring={"model": "openai/gpt-4o-mini"})
     assert s.model == "openai/gpt-4o-mini"
-    messages = [r.getMessage() for r in caplog.records if r.name == "llm_functions"]
+    messages = [r.getMessage() for r in caplog.records if r.name == "llmfunctionkit"]
     assert any("docstring overrides global model" in m for m in messages)
 
 
 def test_docstring_override_silent_when_global_is_default(
     caplog: pytest.LogCaptureFixture,
 ) -> None:
-    with caplog.at_level(logging.INFO, logger="llm_functions"):
+    with caplog.at_level(logging.INFO, logger="llmfunctionkit"):
         resolve(docstring={"model": "anthropic/claude-3-5-sonnet"})
-    messages = [r.getMessage() for r in caplog.records if r.name == "llm_functions"]
+    messages = [r.getMessage() for r in caplog.records if r.name == "llmfunctionkit"]
     assert not any("docstring overrides global" in m for m in messages)
 
 
@@ -94,9 +94,9 @@ def test_docstring_override_silent_when_value_matches_global(
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     configure(cache="off")
-    with caplog.at_level(logging.INFO, logger="llm_functions"):
+    with caplog.at_level(logging.INFO, logger="llmfunctionkit"):
         resolve(docstring={"cache": "off"})
-    messages = [r.getMessage() for r in caplog.records if r.name == "llm_functions"]
+    messages = [r.getMessage() for r in caplog.records if r.name == "llmfunctionkit"]
     assert not any("docstring overrides global" in m for m in messages)
 
 
@@ -208,13 +208,13 @@ def test_configure_log_level_attaches_handler_and_disables_propagation() -> None
 
     buf = io.StringIO()
     configure(log_level="DEBUG", log_stream=buf)
-    logger = logging.getLogger("llm_functions")
+    logger = logging.getLogger("llmfunctionkit")
     assert logger.level == logging.DEBUG
     assert logger.propagate is False
     logger.debug("hello-from-test")
     output = buf.getvalue()
     assert "hello-from-test" in output
-    assert "llm_function" in output
+    assert "llmfunctionkit" in output
 
 
 def test_configure_log_level_is_idempotent_no_double_handlers() -> None:
@@ -224,8 +224,8 @@ def test_configure_log_level_is_idempotent_no_double_handlers() -> None:
     buf2 = io.StringIO()
     configure(log_level="INFO", log_stream=buf1)
     configure(log_level="DEBUG", log_stream=buf2)
-    logger = logging.getLogger("llm_functions")
-    owned = [h for h in logger.handlers if getattr(h, "_llm_functions_owned", False)]
+    logger = logging.getLogger("llmfunctionkit")
+    owned = [h for h in logger.handlers if getattr(h, "_llmfunctionkit_owned", False)]
     assert len(owned) == 1
     logger.debug("only-buf2")
     assert "only-buf2" not in buf1.getvalue()
@@ -237,7 +237,7 @@ def test_configure_log_level_int_accepted() -> None:
 
     buf = io.StringIO()
     configure(log_level=logging.WARNING, log_stream=buf)
-    logger = logging.getLogger("llm_functions")
+    logger = logging.getLogger("llmfunctionkit")
     assert logger.level == logging.WARNING
 
 

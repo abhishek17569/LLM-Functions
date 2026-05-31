@@ -1,4 +1,4 @@
-"""Tests for llm_functions._repair."""
+"""Tests for llmfunctionkit._repair."""
 
 from __future__ import annotations
 
@@ -7,8 +7,8 @@ from typing import Any
 
 import pytest
 
-from llm_functions._provider import OutputValidationError
-from llm_functions._repair import repair_loop
+from llmfunctionkit._provider import OutputValidationError
+from llmfunctionkit._repair import repair_loop
 
 _BASIC_SCHEMA: dict[str, Any] = {
     "type": "object",

@@ -1,10 +1,10 @@
-"""End-to-end tests for llm_functions.
+"""End-to-end tests for llmfunctionkit.
 
 These tests validate the full ``@llm_function`` pipeline against a fake LiteLLM
 ``completion_fn`` to record JSON fixtures, then re-run with ``cache="replay"``
 to confirm the fixtures play back without any network or LLM call.
 
-Fixtures live under ``tests/fixtures/llm_functions/`` and are committed.
+Fixtures live under ``tests/fixtures/llmfunctionkit/`` and are committed.
 """
 
 import json
@@ -14,12 +14,12 @@ from typing import Any
 
 import pytest
 
-from llm_functions import llm_function
-from llm_functions._config import configure, reset_settings
-from llm_functions._decorator import _set_provider_factory
-from llm_functions._provider import _OUTPUT_TOOL_NAME, Provider
+from llmfunctionkit import llm_function
+from llmfunctionkit._config import configure, reset_settings
+from llmfunctionkit._decorator import _set_provider_factory
+from llmfunctionkit._provider import _OUTPUT_TOOL_NAME, Provider
 
-FIXTURES_DIR = Path(__file__).parent / "fixtures" / "llm_functions"
+FIXTURES_DIR = Path(__file__).parent / "fixtures" / "llmfunctionkit"
 
 
 # ---------------------------------------------------------------------------
@@ -216,7 +216,7 @@ def test_tools_star_requires_allow_all_tools(monkeypatch: pytest.MonkeyPatch) ->
         """Echo."""
 
     # No allow_all_tools=True configured, so calling fn raises.
-    from llm_functions._exceptions import ConfigurationError
+    from llmfunctionkit._exceptions import ConfigurationError
 
     # Install a never-called provider so we can run the wrapper at all.
     _set_provider_factory(lambda: Provider(completion_fn=FakeCompletion([])))

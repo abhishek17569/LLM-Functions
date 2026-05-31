@@ -16,7 +16,7 @@ Pipeline at call time:
 7. Dispatch to :class:`Provider`:
    * Non-streaming → :meth:`Provider.complete`.
    * Streaming → :meth:`Provider.complete_stream` wrapped in the matching
-     :mod:`llm_functions._streaming` shaper.
+     :mod:`llmfunctionkit._streaming` shaper.
 8. Validate the provider's dict against the return type via
    :class:`pydantic.TypeAdapter`.
 9. Cache the assembled value (streaming results are fully materialised first).
@@ -733,7 +733,7 @@ def _print_debug_dump(
     out = sys.stderr
     name = ctx.fn.__qualname__
     bar = "=" * 72
-    out.write(f"\n{bar}\nllm_functions debug: {name}\n{bar}\n")
+    out.write(f"\n{bar}\nllmfunctionkit debug: {name}\n{bar}\n")
     out.write(f"model:       {settings.model}\n")
     out.write(f"temperature: {settings.temperature}\n")
     out.write(f"cache:       {settings.cache}\n")
