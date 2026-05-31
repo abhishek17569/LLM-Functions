@@ -45,8 +45,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://example.com/REPLACE-ME"
-Repository = "https://example.com/REPLACE-ME"
+Homepage = "https://github.com/abhishek17569/LLM-Functions"
+Repository = "https://github.com/abhishek17569/LLM-Functions"
 
 [project.optional-dependencies]
 dev = [
