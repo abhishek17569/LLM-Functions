@@ -1,4 +1,4 @@
-# LLM Functions
+# LLM Function Kit
 
 Turn a Python function signature and docstring into an LLM-backed implementation.
 
